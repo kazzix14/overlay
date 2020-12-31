@@ -14,11 +14,18 @@ categories = ["gui"]
 
 license = "MIT OR APACHE-2.0"
 
-[dependencies]
-winit = "0.23.0"
+[features]
+default = ["x11"]
+x11 = ["xcb"]
 
-[target.'cfg(windows)'.dependencies]
+[dependencies]
+winit = "0.24.0"
+
+[target.'cfg(target_os = "windows")'.dependencies]
 winapi = { version = "0.3.8", features = ["windef", "winuser"] }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+xcb = { path = "../rust-xcb", version = "0.9.0", features = ["composite"], optional = true }
 
 [dev-dependencies]
 env_logger = "0.8.2"

@@ -8,6 +8,12 @@ use winit::{
 
 mod os;
 
+#[cfg(target_os = "windows")]
+mod windows;
+
+#[cfg(all(target_os = "linux", feature = "x11"))]
+mod x11;
+
 // TODO: Provide a method which lets you chose which monitor the overlay spawns on top of.
 
 /// Object that lets you build overlays.
@@ -66,7 +72,7 @@ impl OverlayBuilder {
 
         os::make_window_overlay(&window);
 
-        window.set_outer_position(LogicalPosition { x: 0.0, y: 0.0 });
+        window.set_outer_position(LogicalPosition { x: 200.0, y: 0.0 });
         window.set_inner_size(window.current_monitor().unwrap().size());
 
         Ok(Overlay::new(
