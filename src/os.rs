@@ -3,7 +3,16 @@ use winit::window::Window;
 #[cfg(target_os = "windows")]
 use crate::windows as os;
 
-#[cfg(all(target_os = "linux", feature = "x11"))]
+#[cfg(all(
+    any(
+        target_os = "linux",
+        target_os = "dragonfly",
+        target_os = "freebsd",
+        target_os = "openbsd",
+        target_os = "netbsd"
+    ),
+    feature = "x11"
+))]
 use crate::x11 as os;
 
 pub fn make_window_overlay(window: &Window) {

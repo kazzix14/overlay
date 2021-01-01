@@ -11,7 +11,16 @@ mod os;
 #[cfg(target_os = "windows")]
 mod windows;
 
-#[cfg(all(target_os = "linux", feature = "x11"))]
+#[cfg(all(
+    any(
+        target_os = "linux",
+        target_os = "dragonfly",
+        target_os = "freebsd",
+        target_os = "openbsd",
+        target_os = "netbsd"
+    ),
+    feature = "x11"
+))]
 mod x11;
 
 // TODO: Provide a method which lets you chose which monitor the overlay spawns on top of.
