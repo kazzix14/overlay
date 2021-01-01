@@ -1,8 +1,8 @@
 use winapi::{
     shared::windef::HWND__,
     um::winuser::{
-        GetParent, GetWindow, GetWindowLongPtrW, SetForegroundWindow,
-        SetLayeredWindowAttributes, SetWindowLongPtrW, GWL_EXSTYLE, GW_HWNDNEXT, LWA_ALPHA,
+        GetParent, GetWindow, GetWindowLongPtrW, SetForegroundWindow, SetLayeredWindowAttributes,
+        SetWindowLongPtrW, GWL_EXSTYLE, GW_HWNDNEXT, LWA_ALPHA,
     },
 };
 use winit::{platform::windows::WindowExtWindows, window::Window};

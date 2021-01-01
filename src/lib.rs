@@ -157,7 +157,6 @@ impl From<winit::error::OsError> for OverlayCreationError {
     }
 }
 
-
 fn make_window_overlay(window: &Window) {
     platform_impl::make_window_overlay(window, 0);
 }

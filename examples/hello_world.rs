@@ -7,10 +7,7 @@ use imgui_wgpu::{Renderer, RendererConfig};
 use overlay::OverlayBuilder;
 use pollster::block_on;
 use winit::{
-    event::{
-        DeviceEvent, ElementState, Event, KeyboardInput, VirtualKeyCode,
-        WindowEvent,
-    },
+    event::{DeviceEvent, ElementState, Event, KeyboardInput, VirtualKeyCode, WindowEvent},
     event_loop::{ControlFlow, EventLoop},
 };
 
@@ -23,7 +20,6 @@ fn main() {
     let instance = wgpu::Instance::new(wgpu::BackendBit::PRIMARY);
 
     let (mut overlay, size, surface) = {
-
         let overlay = OverlayBuilder::new()
             .with_inactive_opacity(220)
             .build(&event_loop)
