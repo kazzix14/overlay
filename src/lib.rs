@@ -6,22 +6,7 @@ use winit::{
     window::{Window, WindowBuilder},
 };
 
-mod os;
-
-#[cfg(target_os = "windows")]
-mod windows;
-
-#[cfg(all(
-    any(
-        target_os = "linux",
-        target_os = "dragonfly",
-        target_os = "freebsd",
-        target_os = "openbsd",
-        target_os = "netbsd"
-    ),
-    feature = "x11"
-))]
-mod x11;
+mod platform_impl;
 
 // TODO: Provide a method which lets you chose which monitor the overlay spawns on top of.
 
@@ -79,7 +64,7 @@ impl OverlayBuilder {
             .with_decorations(false)
             .build(&event_loop)?;
 
-        os::make_window_overlay(&window);
+        make_window_overlay(&window);
 
         window.set_outer_position(LogicalPosition { x: 200.0, y: 0.0 });
         window.set_inner_size(window.current_monitor().unwrap().size());
@@ -115,7 +100,7 @@ impl Overlay {
     /// Initializes the overlay. Should be called before calling `Overlay::toggle()`.
     pub fn init(&mut self) {
         if !self.init {
-            os::set_window_overlay_opacity(&self.window, self.inactive_opacity);
+            set_window_overlay_opacity(&self.window, self.inactive_opacity);
             self.init = true;
         }
     }
@@ -133,9 +118,9 @@ impl Overlay {
         }
 
         if self.active {
-            os::make_window_overlay_clickthrough(&self.window, self.inactive_opacity);
+            make_window_overlay_clickthrough(&self.window, self.inactive_opacity);
         } else {
-            os::make_window_overlay_clickable(&self.window, self.active_opacity);
+            make_window_overlay_clickable(&self.window, self.active_opacity);
         }
         self.active = !self.active;
     }
@@ -170,4 +155,21 @@ impl From<winit::error::OsError> for OverlayCreationError {
     fn from(from: winit::error::OsError) -> Self {
         Self::Winit(from)
     }
+}
+
+
+fn make_window_overlay(window: &Window) {
+    platform_impl::make_window_overlay(window, 0);
+}
+
+fn make_window_overlay_clickthrough(window: &Window, opacity: u8) {
+    platform_impl::make_window_overlay(window, opacity);
+}
+
+fn make_window_overlay_clickable(window: &Window, opacity: u8) {
+    platform_impl::make_window_overlay_clickable(window, opacity);
+}
+
+fn set_window_overlay_opacity(window: &Window, opacity: u8) {
+    platform_impl::set_window_overlay_opacity(window, opacity);
 }
